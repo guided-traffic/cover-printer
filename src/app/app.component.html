@@ -147,6 +147,14 @@
                   [style.transform]="'translate(' + placeholder.offsetX + 'px, ' + placeholder.offsetY + 'px) scale(' + placeholder.scale + ')'"
                   alt="Placeholder image"
                 />
+                <button class="reset-btn no-print" (click)="resetImage($event, placeholder)" title="Reset image (fit to fill)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+                    <path d="M21 3v5h-5"></path>
+                    <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+                    <path d="M3 21v-5h5"></path>
+                  </svg>
+                </button>
                 <button class="clear-btn no-print" (click)="clearImage($event, placeholder)" title="Remove image">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="18" y1="6" x2="6" y2="18"></line>

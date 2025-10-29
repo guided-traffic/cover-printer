@@ -301,6 +301,40 @@
   user-select: none;
 }
 
+/* Reset Button */
+.reset-btn {
+  position: absolute;
+  top: 4px;
+  right: 32px;
+  width: 24px;
+  height: 24px;
+  background: rgba(59, 130, 246, 0.9);
+  border: none;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+  z-index: 10;
+  padding: 0;
+}
+
+.reset-btn svg {
+  stroke: white;
+  width: 16px;
+  height: 16px;
+}
+
+.placeholder:hover .reset-btn {
+  opacity: 1;
+}
+
+.reset-btn:hover {
+  background: rgba(37, 99, 235, 1);
+}
+
 /* Clear Button */
 .clear-btn {
   position: absolute;

@@ -210,6 +210,34 @@ export class AppComponent {
     placeholder.imageHeight = 0;
   }
 
+  resetImage(event: Event, placeholder: PlaceholderState) {
+    event.stopPropagation();
+
+    // Only reset if there's an image
+    if (!placeholder.imageData || !placeholder.imageWidth || !placeholder.imageHeight) {
+      return;
+    }
+
+    // Convert placeholder dimensions from mm to pixels (at 300 DPI: 1mm = 11.811 pixels)
+    const placeholderWidthPx = this.pictureWidth * 11.811;
+    const placeholderHeightPx = this.pictureHeight * 11.811;
+
+    // Calculate scale to contain the entire image (like CSS background-size: contain)
+    // This ensures the whole image is visible, even if it means white edges
+    const scaleX = placeholderWidthPx / placeholder.imageWidth;
+    const scaleY = placeholderHeightPx / placeholder.imageHeight;
+    const resetScale = Math.min(scaleX, scaleY); // Use min to contain entire image
+
+    // Calculate scaled image dimensions
+    const scaledImageWidth = placeholder.imageWidth * resetScale;
+    const scaledImageHeight = placeholder.imageHeight * resetScale;
+
+    // Center the image in the placeholder
+    placeholder.offsetX = (placeholderWidthPx - scaledImageWidth) / 2;
+    placeholder.offsetY = (placeholderHeightPx - scaledImageHeight) / 2;
+    placeholder.scale = resetScale;
+  }
+
   // Image dragging handlers
   onImageMouseDown(event: MouseEvent, placeholder: PlaceholderState) {
     // Only start dragging if there's an image
