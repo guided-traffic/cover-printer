@@ -24,13 +24,17 @@ export class AppComponent {
   pictureHeight = 45;
 
   // Spacing in mm
-  margins = 5;
+  margins = 4;
   spacing = 2;
 
   // Calculated grid
   rows = 0;
   columns = 0;
   placeholders: any[] = [];
+
+  // Grid offset for centering (in mm)
+  offsetX = 0;
+  offsetY = 0;
 
   ngOnInit() {
     this.calculateGrid();
@@ -47,29 +51,45 @@ export class AppComponent {
   }
 
   calculateGrid() {
-    // Convert measurements to pixels at 300 DPI (1 cm = 118.11 pixels)
-    const DPI_RATIO = 118.11;
+    // Convert all measurements to mm for consistency
+    const paperWidthMm = this.selectedPaperSize.width * 10; // cm to mm
+    const paperHeightMm = this.selectedPaperSize.height * 10; // cm to mm
+    const pictureWidthMm = this.pictureWidth;
+    const pictureHeightMm = this.pictureHeight;
+    const marginMm = this.margins;
+    const spacingMm = this.spacing;
 
-    const paperWidthPx = this.selectedPaperSize.width * DPI_RATIO;
-    const paperHeightPx = this.selectedPaperSize.height * DPI_RATIO;
-    const pictureWidthPx = (this.pictureWidth / 10) * DPI_RATIO;
-    const pictureHeightPx = (this.pictureHeight / 10) * DPI_RATIO;
-    const marginPx = (this.margins / 10) * DPI_RATIO;
-    const spacingPx = (this.spacing / 10) * DPI_RATIO;
-
-    // Calculate available space
-    const availableWidth = paperWidthPx - (2 * marginPx);
-    const availableHeight = paperHeightPx - (2 * marginPx);
+    // Calculate available space (subtracting margins from both sides)
+    const availableWidth = paperWidthMm - (2 * marginMm);
+    const availableHeight = paperHeightMm - (2 * marginMm);
 
     // Calculate how many pictures fit
-    this.columns = Math.floor((availableWidth + spacingPx) / (pictureWidthPx + spacingPx));
-    this.rows = Math.floor((availableHeight + spacingPx) / (pictureHeightPx + spacingPx));
+    // Formula: floor((available + spacing) / (picture + spacing))
+    // The spacing is added to available because the last picture doesn't need spacing after it
+    this.columns = Math.floor((availableWidth + spacingMm) / (pictureWidthMm + spacingMm));
+    this.rows = Math.floor((availableHeight + spacingMm) / (pictureHeightMm + spacingMm));
 
-    // Generate placeholder array
+    // Calculate total grid dimensions (without the trailing spacing)
+    const totalGridWidth = (this.columns * pictureWidthMm) + ((this.columns - 1) * spacingMm);
+    const totalGridHeight = (this.rows * pictureHeightMm) + ((this.rows - 1) * spacingMm);
+
+    // Center the grid within available space
+    this.offsetX = marginMm + (availableWidth - totalGridWidth) / 2;
+    this.offsetY = marginMm + (availableHeight - totalGridHeight) / 2;
+
+    // Generate placeholder array with position information
     const totalPlaceholders = this.rows * this.columns;
-    this.placeholders = Array(totalPlaceholders).fill(null).map((_, index) => ({
-      id: index,
-      image: null
-    }));
+    this.placeholders = Array(totalPlaceholders).fill(null).map((_, index) => {
+      const row = Math.floor(index / this.columns);
+      const col = index % this.columns;
+
+      return {
+        id: index,
+        image: null,
+        // Calculate position in mm
+        left: this.offsetX + (col * (pictureWidthMm + spacingMm)),
+        top: this.offsetY + (row * (pictureHeightMm + spacingMm))
+      };
+    });
   }
 }

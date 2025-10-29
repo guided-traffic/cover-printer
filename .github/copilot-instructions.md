@@ -414,3 +414,4 @@ This project is about **precision printing and easy alignment**, not feature ric
 
 Final notes:
 - Always separate HTML-Template from TypeScript.
+- do not try to start the development server. Its already running in another terminal.
