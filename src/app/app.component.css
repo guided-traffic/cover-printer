@@ -406,12 +406,36 @@
   }
 
   .placeholder {
-    border: none;
-    background: none;
+    border: none !important;
+    background: none !important;
+    /* Force exact dimensions in print */
+    box-sizing: border-box !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    /* Prevent any size adjustments */
+    min-width: auto !important;
+    max-width: none !important;
+    min-height: auto !important;
+    max-height: none !important;
   }
 
   .placeholder-content {
-    display: none;
+    display: none !important;
+  }
+
+  /* Ensure images print at exact size with proper scaling */
+  .image-container {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .image-container img {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    /* Ensure transform is preserved during print */
+    transform-origin: center center !important;
   }
 
   @page {
