@@ -176,31 +176,42 @@ export class AppComponent {
         placeholder.imageWidth = img.width;
         placeholder.imageHeight = img.height;
 
-        // Calculate initial scale to fit the image in the placeholder
-        // Convert placeholder dimensions from mm to pixels (at 300 DPI: 1mm = 11.811 pixels)
-        const placeholderWidthPx = this.pictureWidth * 11.811;
-        const placeholderHeightPx = this.pictureHeight * 11.811;
-
-        // Calculate scale to contain the entire image (like CSS background-size: contain)
-        // This ensures the whole image is visible, even if it means white edges
-        const scaleX = placeholderWidthPx / img.width;
-        const scaleY = placeholderHeightPx / img.height;
-        const initialScale = Math.min(scaleX, scaleY);
-
-        // Calculate scaled image dimensions
-        const scaledImageWidth = img.width * initialScale;
-        const scaledImageHeight = img.height * initialScale;
-
-        // Center the image in the placeholder
-        placeholder.offsetX = (placeholderWidthPx - scaledImageWidth) / 2;
-        placeholder.offsetY = (placeholderHeightPx - scaledImageHeight) / 2;
-        placeholder.scale = initialScale;
+        // Reset to fit the entire image
+        this.fitImageToPlaceholder(placeholder);
       };
       img.src = e.target?.result as string;
     };
 
     reader.readAsDataURL(file);
-  }  clearImage(event: Event, placeholder: PlaceholderState) {
+  }
+
+  private fitImageToPlaceholder(placeholder: PlaceholderState) {
+    if (!placeholder.imageWidth || !placeholder.imageHeight) {
+      return;
+    }
+
+    // Get the actual placeholder dimensions in CSS pixels
+    // The placeholder element uses mm units, which the browser converts to CSS pixels
+    // We need to convert mm to CSS pixels (not 300 DPI pixels!)
+    // At standard screen DPI (96 DPI): 1mm = 96/25.4 = 3.7795275591 CSS pixels
+    const mmToCssPx = 96 / 25.4;
+    const placeholderWidthPx = this.pictureWidth * mmToCssPx;
+    const placeholderHeightPx = this.pictureHeight * mmToCssPx;
+
+    // Calculate scale to contain the entire image (like CSS background-size: contain)
+    // This ensures the whole image is visible, even if it means white edges
+    const scaleX = placeholderWidthPx / placeholder.imageWidth;
+    const scaleY = placeholderHeightPx / placeholder.imageHeight;
+    const fitScale = Math.min(scaleX, scaleY);
+
+    // With transform-origin: center center, the image is automatically centered
+    // We just need to set the scale
+    placeholder.offsetX = 0;
+    placeholder.offsetY = 0;
+    placeholder.scale = fitScale;
+  }
+
+  clearImage(event: Event, placeholder: PlaceholderState) {
     event.stopPropagation();
     placeholder.imageData = null;
     placeholder.offsetX = 0;
@@ -218,24 +229,8 @@ export class AppComponent {
       return;
     }
 
-    // Convert placeholder dimensions from mm to pixels (at 300 DPI: 1mm = 11.811 pixels)
-    const placeholderWidthPx = this.pictureWidth * 11.811;
-    const placeholderHeightPx = this.pictureHeight * 11.811;
-
-    // Calculate scale to contain the entire image (like CSS background-size: contain)
-    // This ensures the whole image is visible, even if it means white edges
-    const scaleX = placeholderWidthPx / placeholder.imageWidth;
-    const scaleY = placeholderHeightPx / placeholder.imageHeight;
-    const resetScale = Math.min(scaleX, scaleY); // Use min to contain entire image
-
-    // Calculate scaled image dimensions
-    const scaledImageWidth = placeholder.imageWidth * resetScale;
-    const scaledImageHeight = placeholder.imageHeight * resetScale;
-
-    // Center the image in the placeholder
-    placeholder.offsetX = (placeholderWidthPx - scaledImageWidth) / 2;
-    placeholder.offsetY = (placeholderHeightPx - scaledImageHeight) / 2;
-    placeholder.scale = resetScale;
+    // Use the same logic as when loading an image
+    this.fitImageToPlaceholder(placeholder);
   }
 
   // Image dragging handlers
