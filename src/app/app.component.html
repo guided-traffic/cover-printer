@@ -140,7 +140,8 @@
               <!-- Image content -->
               <div class="image-container" *ngIf="placeholder.imageData"
                    [class.dragging]="placeholder.isDraggingImage"
-                   (mousedown)="onImageMouseDown($event, placeholder)">
+                   (mousedown)="onImageMouseDown($event, placeholder)"
+                   (wheel)="onWheel($event, placeholder)">
                 <img
                   [src]="placeholder.imageData"
                   [style.transform]="'translate(' + placeholder.offsetX + 'px, ' + placeholder.offsetY + 'px) scale(' + placeholder.scale + ')'"

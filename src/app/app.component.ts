@@ -181,13 +181,19 @@ export class AppComponent {
         const placeholderWidthPx = this.pictureWidth * 11.811;
         const placeholderHeightPx = this.pictureHeight * 11.811;
 
-        // Calculate scale to cover the placeholder (like CSS background-size: cover)
+        // Calculate scale to contain the entire image (like CSS background-size: contain)
+        // This ensures the whole image is visible, even if it means white edges
         const scaleX = placeholderWidthPx / img.width;
         const scaleY = placeholderHeightPx / img.height;
-        const initialScale = Math.max(scaleX, scaleY);
+        const initialScale = Math.min(scaleX, scaleY);
 
-        placeholder.offsetX = 0;
-        placeholder.offsetY = 0;
+        // Calculate scaled image dimensions
+        const scaledImageWidth = img.width * initialScale;
+        const scaledImageHeight = img.height * initialScale;
+
+        // Center the image in the placeholder
+        placeholder.offsetX = (placeholderWidthPx - scaledImageWidth) / 2;
+        placeholder.offsetY = (placeholderHeightPx - scaledImageHeight) / 2;
         placeholder.scale = initialScale;
       };
       img.src = e.target?.result as string;
@@ -264,5 +270,42 @@ export class AppComponent {
       startOffsetX: 0,
       startOffsetY: 0
     };
+  }
+
+  // Mouse wheel zoom handler
+  onWheel(event: WheelEvent, placeholder: PlaceholderState) {
+    // Only zoom if there's an image
+    if (!placeholder.imageData) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    // Get the placeholder element to calculate mouse position relative to it
+    const target = event.currentTarget as HTMLElement;
+    const rect = target.getBoundingClientRect();
+
+    // Calculate mouse position relative to placeholder
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+
+    // Calculate zoom factor (1.1 for zoom in, 1/1.1 for zoom out)
+    const zoomFactor = event.deltaY < 0 ? 1.1 : 1 / 1.1;
+    const oldScale = placeholder.scale;
+    const newScale = oldScale * zoomFactor;
+
+    // Calculate the point under the mouse in the image coordinate space (before zoom)
+    const imageX = (mouseX - placeholder.offsetX) / oldScale;
+    const imageY = (mouseY - placeholder.offsetY) / oldScale;
+
+    // Calculate new offset to keep the point under the mouse stationary
+    const newOffsetX = mouseX - imageX * newScale;
+    const newOffsetY = mouseY - imageY * newScale;
+
+    // Update placeholder state
+    placeholder.scale = newScale;
+    placeholder.offsetX = newOffsetX;
+    placeholder.offsetY = newOffsetY;
   }
 }
