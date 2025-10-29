@@ -1,0 +1,7 @@
+(function(window) {
+  window.env = window.env || {};
+
+  window["env"]["buildNuber"] = "${BUILD_NUMBER}";
+  window["env"]["commitHash"] = "${GIT_COMMIT}";
+  window["env"]["buildTimeEpoch"] = "${BUILD_TIME}";
+})(this);
