@@ -14,6 +14,16 @@ interface PlaceholderState {
   left: number;
   top: number;
   isDragOver?: boolean;
+  isDraggingImage?: boolean;
+}
+
+interface DragState {
+  active: boolean;
+  placeholderId: number | null;
+  startX: number;
+  startY: number;
+  startOffsetX: number;
+  startOffsetY: number;
 }
 
 @Component({
@@ -49,8 +59,22 @@ export class AppComponent {
   offsetX = 0;
   offsetY = 0;
 
+  // Drag state for image positioning
+  private dragState: DragState = {
+    active: false,
+    placeholderId: null,
+    startX: 0,
+    startY: 0,
+    startOffsetX: 0,
+    startOffsetY: 0
+  };
+
   ngOnInit() {
     this.calculateGrid();
+
+    // Add global mouse event listeners for image dragging
+    document.addEventListener('mousemove', this.onMouseMove.bind(this));
+    document.addEventListener('mouseup', this.onMouseUp.bind(this));
   }
 
   onPaperSizeChange(event: Event) {
@@ -178,5 +202,67 @@ export class AppComponent {
     placeholder.scale = 1;
     placeholder.imageWidth = 0;
     placeholder.imageHeight = 0;
+  }
+
+  // Image dragging handlers
+  onImageMouseDown(event: MouseEvent, placeholder: PlaceholderState) {
+    // Only start dragging if there's an image
+    if (!placeholder.imageData) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    // Initialize drag state
+    this.dragState = {
+      active: true,
+      placeholderId: placeholder.id,
+      startX: event.clientX,
+      startY: event.clientY,
+      startOffsetX: placeholder.offsetX,
+      startOffsetY: placeholder.offsetY
+    };
+
+    placeholder.isDraggingImage = true;
+  }
+
+  private onMouseMove(event: MouseEvent) {
+    if (!this.dragState.active || this.dragState.placeholderId === null) {
+      return;
+    }
+
+    // Find the placeholder being dragged
+    const placeholder = this.placeholders.find(p => p.id === this.dragState.placeholderId);
+    if (!placeholder) {
+      return;
+    }
+
+    // Calculate delta from drag start
+    const deltaX = event.clientX - this.dragState.startX;
+    const deltaY = event.clientY - this.dragState.startY;
+
+    // Update image offset
+    placeholder.offsetX = this.dragState.startOffsetX + deltaX;
+    placeholder.offsetY = this.dragState.startOffsetY + deltaY;
+  }
+
+  private onMouseUp(event: MouseEvent) {
+    if (this.dragState.active && this.dragState.placeholderId !== null) {
+      const placeholder = this.placeholders.find(p => p.id === this.dragState.placeholderId);
+      if (placeholder) {
+        placeholder.isDraggingImage = false;
+      }
+    }
+
+    // Reset drag state
+    this.dragState = {
+      active: false,
+      placeholderId: null,
+      startX: 0,
+      startY: 0,
+      startOffsetX: 0,
+      startOffsetY: 0
+    };
   }
 }
