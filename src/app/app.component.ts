@@ -35,6 +35,9 @@ interface DragState {
 export class AppComponent {
   title = 'Cover Printer';
 
+  // Build number from environment variables
+  buildNumber = (window as any)?.env?.buildNumber || 'dev';
+
   // Paper sizes in cm
   paperSizes = [
     { label: '10×15 cm', width: 10, height: 15 },
@@ -43,8 +46,8 @@ export class AppComponent {
   selectedPaperSize = this.paperSizes[0];
 
   // Picture dimensions in mm
-  pictureWidth = 44;
-  pictureHeight = 44;
+  pictureWidth = 42;
+  pictureHeight = 42;
 
   // Spacing in mm
   margins = 4;
