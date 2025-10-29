@@ -117,18 +117,39 @@
             <div
               *ngFor="let placeholder of placeholders"
               class="placeholder"
+              [class.drag-over]="placeholder.isDragOver"
+              [class.filled]="placeholder.imageData"
               [style.width.mm]="pictureWidth"
               [style.height.mm]="pictureHeight"
               [style.left.mm]="placeholder.left"
               [style.top.mm]="placeholder.top"
+              (dragover)="onDragOver($event, placeholder)"
+              (dragleave)="onDragLeave($event, placeholder)"
+              (drop)="onDrop($event, placeholder)"
             >
-              <div class="placeholder-content">
+              <!-- Empty placeholder content -->
+              <div class="placeholder-content" *ngIf="!placeholder.imageData">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                   <rect x="3" y="3" width="18" height="18" rx="2"></rect>
                   <circle cx="8.5" cy="8.5" r="1.5"></circle>
                   <path d="M21 15l-5-5L5 21"></path>
                 </svg>
                 <span>Drop image here</span>
+              </div>
+
+              <!-- Image content -->
+              <div class="image-container" *ngIf="placeholder.imageData">
+                <img
+                  [src]="placeholder.imageData"
+                  [style.transform]="'translate(' + placeholder.offsetX + 'px, ' + placeholder.offsetY + 'px) scale(' + placeholder.scale + ')'"
+                  alt="Placeholder image"
+                />
+                <button class="clear-btn no-print" (click)="clearImage($event, placeholder)" title="Remove image">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
               </div>
             </div>
           </div>

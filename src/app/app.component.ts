@@ -3,6 +3,19 @@ import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+interface PlaceholderState {
+  id: number;
+  imageData: string | null;
+  offsetX: number;
+  offsetY: number;
+  scale: number;
+  imageWidth: number;
+  imageHeight: number;
+  left: number;
+  top: number;
+  isDragOver?: boolean;
+}
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, CommonModule, FormsModule],
@@ -30,7 +43,7 @@ export class AppComponent {
   // Calculated grid
   rows = 0;
   columns = 0;
-  placeholders: any[] = [];
+  placeholders: PlaceholderState[] = [];
 
   // Grid offset for centering (in mm)
   offsetX = 0;
@@ -85,11 +98,85 @@ export class AppComponent {
 
       return {
         id: index,
-        image: null,
+        imageData: null,
+        offsetX: 0,
+        offsetY: 0,
+        scale: 1,
+        imageWidth: 0,
+        imageHeight: 0,
         // Calculate position in mm
         left: this.offsetX + (col * (pictureWidthMm + spacingMm)),
-        top: this.offsetY + (row * (pictureHeightMm + spacingMm))
+        top: this.offsetY + (row * (pictureHeightMm + spacingMm)),
+        isDragOver: false
       };
     });
+  }
+
+  // Drag and drop event handlers
+  onDragOver(event: DragEvent, placeholder: PlaceholderState) {
+    event.preventDefault();
+    event.stopPropagation();
+    placeholder.isDragOver = true;
+  }
+
+  onDragLeave(event: DragEvent, placeholder: PlaceholderState) {
+    event.preventDefault();
+    event.stopPropagation();
+    placeholder.isDragOver = false;
+  }
+
+  onDrop(event: DragEvent, placeholder: PlaceholderState) {
+    event.preventDefault();
+    event.stopPropagation();
+    placeholder.isDragOver = false;
+
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+
+      // Check if file is an image
+      if (file.type.startsWith('image/')) {
+        this.loadImage(file, placeholder);
+      }
+    }
+  }
+
+  loadImage(file: File, placeholder: PlaceholderState) {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        // Store image data and dimensions
+        placeholder.imageData = e.target?.result as string;
+        placeholder.imageWidth = img.width;
+        placeholder.imageHeight = img.height;
+
+        // Calculate initial scale to fit the image in the placeholder
+        // Convert placeholder dimensions from mm to pixels (at 300 DPI: 1mm = 11.811 pixels)
+        const placeholderWidthPx = this.pictureWidth * 11.811;
+        const placeholderHeightPx = this.pictureHeight * 11.811;
+
+        // Calculate scale to cover the placeholder (like CSS background-size: cover)
+        const scaleX = placeholderWidthPx / img.width;
+        const scaleY = placeholderHeightPx / img.height;
+        const initialScale = Math.max(scaleX, scaleY);
+
+        placeholder.offsetX = 0;
+        placeholder.offsetY = 0;
+        placeholder.scale = initialScale;
+      };
+      img.src = e.target?.result as string;
+    };
+
+    reader.readAsDataURL(file);
+  }  clearImage(event: Event, placeholder: PlaceholderState) {
+    event.stopPropagation();
+    placeholder.imageData = null;
+    placeholder.offsetX = 0;
+    placeholder.offsetY = 0;
+    placeholder.scale = 1;
+    placeholder.imageWidth = 0;
+    placeholder.imageHeight = 0;
   }
 }

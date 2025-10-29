@@ -235,6 +235,24 @@
   background: #f3f4ff;
 }
 
+.placeholder.drag-over {
+  border-color: #667eea;
+  border-width: 3px;
+  background: #eef2ff;
+  transform: scale(1.02);
+}
+
+.placeholder.filled {
+  border: 2px solid #d1d5db;
+  background: white;
+  cursor: default;
+}
+
+.placeholder.filled:hover {
+  border-color: #667eea;
+  background: white;
+}
+
 .placeholder-content {
   display: flex;
   flex-direction: column;
@@ -254,6 +272,61 @@
 .placeholder-content span {
   font-size: 0.75rem;
   font-weight: 500;
+}
+
+/* Image Container */
+.image-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-container img {
+  max-width: none;
+  max-height: none;
+  width: auto;
+  height: auto;
+  display: block;
+  transform-origin: center center;
+  transition: transform 0.1s ease;
+}
+
+/* Clear Button */
+.clear-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  background: rgba(239, 68, 68, 0.9);
+  border: none;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+  z-index: 10;
+  padding: 0;
+}
+
+.clear-btn svg {
+  stroke: white;
+  width: 16px;
+  height: 16px;
+}
+
+.placeholder:hover .clear-btn {
+  opacity: 1;
+}
+
+.clear-btn:hover {
+  background: rgba(220, 38, 38, 1);
 }
 
 /* Print Styles */
