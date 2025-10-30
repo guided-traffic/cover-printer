@@ -266,10 +266,8 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  background: white;
-  border-radius: 12px;
+  background: transparent;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   min-height: 600px;
 }
 
@@ -304,7 +302,7 @@
   transition: all 0.2s ease;
   cursor: pointer;
   position: absolute;
-  overflow: hidden;
+  overflow: visible; /* Changed to visible so crop marks can extend outside */
 }
 
 .placeholder:hover {
@@ -328,6 +326,139 @@
 .placeholder.filled:hover {
   border-color: #667eea;
   background: white;
+}
+
+/* Crop marks for cutting - positioned at corners, extending outward */
+.crop-marks {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.crop-mark {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* Top-left corner */
+.crop-mark-tl {
+  top: 0;
+  left: 0;
+}
+
+.crop-mark-tl::before,
+.crop-mark-tl::after {
+  content: '';
+  position: absolute;
+  background: #000;
+}
+
+.crop-mark-tl::before {
+  /* Horizontal line extending left from corner */
+  width: 3mm;
+  height: 0.3mm;
+  top: -0.15mm;
+  right: 0; /* Start at corner, extend left (using right: 0) */
+}
+
+.crop-mark-tl::after {
+  /* Vertical line extending up from corner */
+  width: 0.3mm;
+  height: 3mm;
+  bottom: 0; /* Start at corner, extend up (using bottom: 0) */
+  left: -0.15mm;
+}
+
+/* Top-right corner */
+.crop-mark-tr {
+  top: 0;
+  right: 0;
+}
+
+.crop-mark-tr::before,
+.crop-mark-tr::after {
+  content: '';
+  position: absolute;
+  background: #000;
+}
+
+.crop-mark-tr::before {
+  /* Horizontal line extending right from corner */
+  width: 3mm;
+  height: 0.3mm;
+  top: -0.15mm;
+  left: 0; /* Start at corner, extend right */
+}
+
+.crop-mark-tr::after {
+  /* Vertical line extending up from corner */
+  width: 0.3mm;
+  height: 3mm;
+  bottom: 0; /* Start at corner, extend up */
+  right: -0.15mm;
+}
+
+/* Bottom-left corner */
+.crop-mark-bl {
+  bottom: 0;
+  left: 0;
+}
+
+.crop-mark-bl::before,
+.crop-mark-bl::after {
+  content: '';
+  position: absolute;
+  background: #000;
+}
+
+.crop-mark-bl::before {
+  /* Horizontal line extending left from corner */
+  width: 3mm;
+  height: 0.3mm;
+  bottom: -0.15mm;
+  right: 0; /* Start at corner, extend left */
+}
+
+.crop-mark-bl::after {
+  /* Vertical line extending down from corner */
+  width: 0.3mm;
+  height: 3mm;
+  top: 0; /* Start at corner, extend down */
+  left: -0.15mm;
+}
+
+/* Bottom-right corner */
+.crop-mark-br {
+  bottom: 0;
+  right: 0;
+}
+
+.crop-mark-br::before,
+.crop-mark-br::after {
+  content: '';
+  position: absolute;
+  background: #000;
+}
+
+.crop-mark-br::before {
+  /* Horizontal line extending right from corner */
+  width: 3mm;
+  height: 0.3mm;
+  bottom: -0.15mm;
+  left: 0; /* Start at corner, extend right */
+}
+
+.crop-mark-br::after {
+  /* Vertical line extending down from corner */
+  width: 0.3mm;
+  height: 3mm;
+  top: 0; /* Start at corner, extend down */
+  right: -0.15mm;
 }
 
 .placeholder-content {
@@ -488,6 +619,7 @@
   .placeholder {
     border: none !important;
     background: none !important;
+    overflow: visible !important; /* Allow crop marks to extend outside */
     /* Force exact dimensions in print */
     box-sizing: border-box !important;
     -webkit-print-color-adjust: exact;
@@ -501,6 +633,14 @@
 
   .placeholder-content {
     display: none !important;
+  }
+
+  /* Ensure crop marks are visible and black in print */
+  .crop-mark::before,
+  .crop-mark::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #000 !important;
   }
 
   /* Ensure images print at exact size with proper scaling */

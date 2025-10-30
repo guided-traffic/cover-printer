@@ -56,6 +56,9 @@ export class AppComponent {
   // Allow whitespace when dragging images
   allowWhitespace = false;
 
+  // Show crop marks for cutting
+  showCropMarks = true;
+
   // Calculated grid
   rows = 0;
   columns = 0;

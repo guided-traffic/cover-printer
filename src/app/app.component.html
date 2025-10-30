@@ -98,6 +98,16 @@
             Allow Whitespace
           </label>
         </div>
+        <div class="form-group checkbox-group">
+          <label for="show-crop-marks">
+            <input
+              type="checkbox"
+              id="show-crop-marks"
+              [(ngModel)]="showCropMarks"
+            />
+            Show Crop Marks
+          </label>
+        </div>
       </div>
 
       <div class="info-section">
@@ -145,6 +155,14 @@
               (dragleave)="onDragLeave($event, placeholder)"
               (drop)="onDrop($event, placeholder)"
             >
+              <!-- Crop marks for cutting -->
+              <div class="crop-marks" *ngIf="showCropMarks">
+                <div class="crop-mark crop-mark-tl"></div>
+                <div class="crop-mark crop-mark-tr"></div>
+                <div class="crop-mark crop-mark-bl"></div>
+                <div class="crop-mark crop-mark-br"></div>
+              </div>
+
               <!-- Empty placeholder content -->
               <div class="placeholder-content" *ngIf="!placeholder.imageData">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
