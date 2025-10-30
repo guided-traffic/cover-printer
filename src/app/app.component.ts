@@ -61,6 +61,10 @@ export class AppComponent {
   // Show crop marks for cutting
   showCropMarks = true;
 
+  // Error handling
+  hasLayoutError = false;
+  errorMessage = '';
+
   // Calculated grid
   rows = 0;
   columns = 0;
@@ -116,6 +120,32 @@ export class AppComponent {
     const marginMm = this.margins;
     const spacingMm = this.spacing;
 
+    // Check for errors before calculating grid
+    this.hasLayoutError = false;
+    this.errorMessage = '';
+
+    // Check if picture size (with margins) exceeds paper size
+    const minRequiredWidth = pictureWidthMm + (2 * marginMm);
+    const minRequiredHeight = pictureHeightMm + (2 * marginMm);
+
+    if (minRequiredWidth > paperWidthMm) {
+      this.hasLayoutError = true;
+      this.errorMessage = `Error: Picture width (${pictureWidthMm}mm) plus margins (2×${marginMm}mm = ${2*marginMm}mm) exceeds paper width (${paperWidthMm}mm). Required: ${minRequiredWidth}mm, available: ${paperWidthMm}mm.`;
+      this.rows = 0;
+      this.columns = 0;
+      this.placeholders = [];
+      return;
+    }
+
+    if (minRequiredHeight > paperHeightMm) {
+      this.hasLayoutError = true;
+      this.errorMessage = `Error: Picture height (${pictureHeightMm}mm) plus margins (2×${marginMm}mm = ${2*marginMm}mm) exceeds paper height (${paperHeightMm}mm). Required: ${minRequiredHeight}mm, available: ${paperHeightMm}mm.`;
+      this.rows = 0;
+      this.columns = 0;
+      this.placeholders = [];
+      return;
+    }
+
     // Calculate available space (subtracting margins from both sides)
     const availableWidth = paperWidthMm - (2 * marginMm);
     const availableHeight = paperHeightMm - (2 * marginMm);
@@ -125,6 +155,16 @@ export class AppComponent {
     // The spacing is added to available because the last picture doesn't need spacing after it
     this.columns = Math.floor((availableWidth + spacingMm) / (pictureWidthMm + spacingMm));
     this.rows = Math.floor((availableHeight + spacingMm) / (pictureHeightMm + spacingMm));
+
+    // Check if no pictures can fit (even though individual size checks passed)
+    if (this.columns <= 0 || this.rows <= 0) {
+      this.hasLayoutError = true;
+      this.errorMessage = `Error: No space for pictures on the selected paper. Picture size: ${pictureWidthMm}×${pictureHeightMm}mm, available area after margins: ${availableWidth}×${availableHeight}mm. Please reduce picture size or margins.`;
+      this.rows = 0;
+      this.columns = 0;
+      this.placeholders = [];
+      return;
+    }
 
     // Calculate total grid dimensions (without the trailing spacing)
     const totalGridWidth = (this.columns * pictureWidthMm) + ((this.columns - 1) * spacingMm);

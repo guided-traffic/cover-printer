@@ -111,10 +111,12 @@
       </div>
 
       <div class="info-section">
-        <div class="info-card">
+        <div class="info-card" [class.error]="hasLayoutError">
           <div class="info-label">Grid Layout</div>
-          <div class="info-value">{{ columns }} × {{ rows }}</div>
-          <div class="info-sub">{{ columns * rows }} pictures per page</div>
+          <div class="info-value" *ngIf="!hasLayoutError">{{ columns }} × {{ rows }}</div>
+          <div class="info-value error-text" *ngIf="hasLayoutError">Error</div>
+          <div class="info-sub" *ngIf="!hasLayoutError">{{ columns * rows }} pictures per page</div>
+          <div class="info-sub error-text" *ngIf="hasLayoutError">Check configuration</div>
         </div>
         <div class="info-card">
           <div class="info-label">Print Quality</div>
@@ -141,6 +143,24 @@
         <div class="paper"
              [style.width.cm]="selectedPaperSize.width"
              [style.height.cm]="selectedPaperSize.height">
+
+          <!-- Error Message Display -->
+          <div class="error-overlay" *ngIf="hasLayoutError">
+            <div class="error-message">
+              <div class="error-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="15" y1="9" x2="9" y2="15"></line>
+                  <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+              </div>
+              <div class="error-text">{{ errorMessage }}</div>
+              <div class="error-suggestion">
+                Reduce the picture size or margins, or select a larger paper format.
+              </div>
+            </div>
+          </div>
+
           <div class="grid-container">
             <div
               *ngFor="let placeholder of placeholders"
