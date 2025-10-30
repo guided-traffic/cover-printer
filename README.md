@@ -4,7 +4,7 @@ A web-based tool for creating and printing custom NFC tag covers for your patche
 
 ![TeddyCloud NFC Beacon](docs/teddycloud_nfc_beacon.jpeg)
 
-🌐 **Website**: https://tcp.guided-traffic.com/
+🌐 **start printing now:**: https://tcp.guided-traffic.com/
 
 🐳 **Docker Image** (for self-hosting): https://hub.docker.com/repository/docker/hansfischer/cover-printer/general
 
