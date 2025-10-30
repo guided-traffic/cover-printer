@@ -1,15 +1,15 @@
-# Cover Printer - GitHub Copilot Instructions
+# TeddyCloud Cover Printer - GitHub Copilot Instructions
 
 ## Project Overview
 
-This is a web-based application built with Angular for positioning and printing multiple small pictures (such as CD/DVD covers, labels, or stickers) on photo paper. The application runs entirely client-side in the browser with no backend dependencies, focusing on perfect print quality and easy picture alignment.
+This is a web-based application built with Angular for creating and printing custom NFC tag covers for patched Tonieboxes. The application is designed for TeddyCloud users who want to create professional-looking covers for their custom content. The application runs entirely client-side in the browser with no backend dependencies, focusing on perfect print quality and easy NFC tag cover alignment.
 
 ## Core Purpose
 
-The app helps users efficiently print multiple small pictures on photo paper by:
-1. Calculating optimal layout based on paper and picture sizes
-2. Providing precise picture positioning controls
-3. Ensuring print-ready output at 300 DPI
+The app helps TeddyCloud users efficiently create and print custom NFC tag covers by:
+1. Calculating optimal layout based on paper and NFC tag cover sizes
+2. Providing precise cover art positioning controls for NFC tags
+3. Ensuring print-ready output at 300 DPI for professional NFC tag covers
 4. Maintaining all processing client-side for privacy
 
 ## Technical Stack
