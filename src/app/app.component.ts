@@ -41,7 +41,9 @@ export class AppComponent {
   // Paper sizes in cm
   paperSizes = [
     { label: '10×15 cm', width: 10, height: 15 },
-    { label: '13×18 cm', width: 13, height: 18 }
+    { label: '13×18 cm', width: 13, height: 18 },
+    { label: 'A5', width: 14.8, height: 21 },
+    { label: 'A4', width: 21, height: 29.7 }
   ];
   selectedPaperSize = this.paperSizes[0];
 

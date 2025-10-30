@@ -3,7 +3,7 @@
 A web-based tool for positioning and printing multiple small pictures (CD/DVD covers, labels, stickers) on photo paper with precision and ease.
 
 🌐 **Website**: https://tcp.guided-traffic.com/
-🐳 **Docker Hub**: https://hub.docker.com/repository/docker/hansfischer/cover-printer/general
+🐳 **Docker Image** (for self-hosting): https://hub.docker.com/repository/docker/hansfischer/cover-printer/general
 
 ## 🎯 Project Goals
 
