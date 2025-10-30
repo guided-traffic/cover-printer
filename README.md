@@ -1,25 +1,30 @@
-# Cover Printer
+# TeddyCloud Cover Printer
 
-A web-based tool for positioning and printing multiple small pictures (CD/DVD covers, labels, stickers) on photo paper with precision and ease.
+A web-based tool for creating and printing custom NFC tag covers for your patched Toniebox. Design professional-looking covers for your TeddyCloud content with precision and ease.
+
+![TeddyCloud NFC Beacon](docs/teddycloud_nfc_beacon.jpeg)
 
 🌐 **Website**: https://tcp.guided-traffic.com/
+
 🐳 **Docker Image** (for self-hosting): https://hub.docker.com/repository/docker/hansfischer/cover-printer/general
 
 ## 🎯 Project Goals
 
-- **Perfect Print Quality**: 300 DPI output with exact dimensional accuracy
+- **Custom Toniebox Tags**: Create professional NFC tag covers for your TeddyCloud content
+- **Perfect Print Quality**: 300 DPI output with exact dimensional accuracy for NFC tag labels
 - **Easy Picture Alignment**: Intuitive drag-and-drop positioning with zoom controls
 - **Privacy-First**: All processing happens client-side in the browser
 - **No Backend Required**: Zero server dependencies or data uploads
 
 ## ✨ Key Features
 
-- 📐 Automatic layout calculation for optimal picture placement
+- 🏷️ **TeddyCloud Integration**: Perfect for creating custom NFC tag covers for patched Tonieboxes
+- 📐 Automatic layout calculation for optimal NFC tag cover placement
 - 📄 Support for multiple paper sizes (10×15cm, 13×18cm photo paper)
-- 🖼️ Drag & drop images directly from your computer
-- 🔍 Zoom and pan to position pictures perfectly within placeholders
-- ⚙️ Configurable picture dimensions, margins, and spacing
-- 🖨️ Direct browser printing with accurate dimensions
+- 🖼️ Drag & drop cover images directly from your computer
+- 🔍 Zoom and pan to position cover art perfectly within tag boundaries
+- ⚙️ Configurable tag dimensions, margins, and spacing (default: 45×45mm for standard NFC tags)
+- 🖨️ Direct browser printing with accurate dimensions for precise cutting
 
 ## 🚀 Quick Start
 
@@ -35,11 +40,12 @@ npm start
 
 ## 📋 Usage
 
-1. **Configure**: Select paper size and enter picture dimensions (default: 45×45mm)
-2. **Adjust**: Set margins and spacing between pictures
-3. **Add Pictures**: Drag images from your computer onto the placeholders
-4. **Position**: Click and drag to reposition, use mouse wheel to zoom
-5. **Print**: Press Ctrl+P (Cmd+P on Mac) to print
+1. **Configure**: Select paper size and enter NFC tag cover dimensions (default: 45×45mm for standard tags)
+2. **Adjust**: Set margins and spacing between tag covers for easy cutting
+3. **Add Cover Art**: Drag cover images from your computer onto the tag placeholders
+4. **Position**: Click and drag to reposition cover art, use mouse wheel to zoom for perfect alignment
+5. **Print**: Press Ctrl+P (Cmd+P on Mac) to print your custom TeddyCloud NFC tag covers
+6. **Apply**: Cut out the covers and attach them to your NFC tags for your patched Toniebox
 
 ## 🛠️ Technical Details
 
@@ -52,10 +58,11 @@ npm start
 ## 📝 Project Scope
 
 **In Scope:**
-- Precise picture positioning and printing
+- Custom NFC tag cover creation for TeddyCloud/Toniebox
+- Precise cover art positioning and printing
 - Common image formats (JPG, PNG, WebP)
 - Desktop browser experience
-- Automatic grid layout optimization
+- Automatic grid layout optimization for efficient paper usage
 
 **Out of Scope:**
 - Mobile/tablet support
@@ -63,6 +70,7 @@ npm start
 - Image editing (rotation, filters)
 - PDF export functionality
 - Multi-page layouts
+- Direct NFC tag programming (use TeddyCloud for that)
 
 ## 📖 Documentation
 
