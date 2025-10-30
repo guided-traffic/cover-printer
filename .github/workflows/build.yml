@@ -58,3 +58,6 @@ jobs:
           labels: ${{ steps.tag_names.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          # Supply Chain Attestation
+          provenance: true
+          sbom: true
