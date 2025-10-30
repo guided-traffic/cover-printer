@@ -1,7 +1,7 @@
 <div class="app-container">
   <!-- Header -->
   <header class="header no-print">
-    <div class="header-content">
+    <div class="header-left">
       <h1>
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="2" y="3" width="20" height="14" rx="2"></rect>
@@ -11,7 +11,22 @@
         Teddycloud Cover Printer
       </h1>
     </div>
+    <div class="header-center">
+    </div>
     <div class="header-right">
+      <!-- Feature Request Notice -->
+      <div class="feature-notice-header">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <path d="m12 17.02.01 0"></path>
+        </svg>
+        <span>Missing a feature?
+          <a href="https://github.com/guided-traffic/teddycloud-cover-printer/issues" target="_blank" rel="noopener noreferrer">
+            Create a GitHub Issue
+          </a>
+        </span>
+      </div>
       <span class="build-number">{{ buildNumber }}</span>
       <a href="https://github.com/guided-traffic/teddycloud-cover-printer" target="_blank" rel="noopener noreferrer" class="github-link" title="View on GitHub">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">

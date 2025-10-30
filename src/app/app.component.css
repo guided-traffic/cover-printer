@@ -10,48 +10,52 @@
 .header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 2rem 2rem 1.5rem;
+  padding: 1rem 2rem 0.75rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.header-content h1 {
+.header-left h1 {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   font-size: 2rem;
   font-weight: 600;
-  margin: 0 0 0.5rem 0;
+  margin: 0;
 }
 
-.header-content h1 svg {
+.header-left h1 svg {
   flex-shrink: 0;
 }
 
-.header-content .subtitle {
-  margin: 0;
-  opacity: 0.95;
-  font-size: 1rem;
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .header-right {
-  position: absolute;
-  top: 2rem;
-  right: 2rem;
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
 .build-number {
-  color: white;
+  color: rgba(255, 255, 255, 0.95);
   font-size: 0.875rem;
   font-weight: 500;
-  opacity: 0.9;
-  padding: 0.375rem 0.75rem;
-  background-color: rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
+  padding: 0.5rem 0.875rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
   font-family: 'Courier New', monospace;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .github-link {
@@ -78,6 +82,54 @@
 
 .github-link:active {
   transform: scale(0.95);
+}
+
+/* Feature Notice in Header */
+.feature-notice-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.95);
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  padding: 0.5rem 0.875rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.feature-notice-header svg {
+  color: rgba(255, 255, 255, 0.8);
+  flex-shrink: 0;
+}
+
+.feature-notice-header a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s ease;
+}
+
+.feature-notice-header a:hover {
+  border-bottom-color: white;
+}
+
+.feature-notice-header:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.build-number:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Main Content */
