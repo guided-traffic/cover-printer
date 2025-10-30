@@ -93,6 +93,7 @@
               type="checkbox"
               id="allow-whitespace"
               [(ngModel)]="allowWhitespace"
+              (ngModelChange)="onAllowWhitespaceChange()"
             />
             Allow Whitespace
           </label>

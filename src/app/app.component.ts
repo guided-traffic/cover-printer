@@ -93,6 +93,15 @@ export class AppComponent {
     this.calculateGrid();
   }
 
+  onAllowWhitespaceChange() {
+    // Refit all images when the whitespace setting changes
+    this.placeholders.forEach(placeholder => {
+      if (placeholder.imageData && placeholder.imageWidth && placeholder.imageHeight) {
+        this.fitImageToPlaceholder(placeholder);
+      }
+    });
+  }
+
   calculateGrid() {
     // Convert all measurements to mm for consistency
     const paperWidthMm = this.selectedPaperSize.width * 10; // cm to mm
@@ -204,11 +213,18 @@ export class AppComponent {
     const placeholderWidthPx = this.pictureWidth * mmToCssPx;
     const placeholderHeightPx = this.pictureHeight * mmToCssPx;
 
-    // Calculate scale to contain the entire image (like CSS background-size: contain)
-    // This ensures the whole image is visible, even if it means white edges
+    // Calculate scale based on allowWhitespace setting
     const scaleX = placeholderWidthPx / placeholder.imageWidth;
     const scaleY = placeholderHeightPx / placeholder.imageHeight;
-    const fitScale = Math.min(scaleX, scaleY);
+
+    let fitScale: number;
+    if (this.allowWhitespace) {
+      // Use 'contain' behavior: fit entire image, may show whitespace
+      fitScale = Math.min(scaleX, scaleY);
+    } else {
+      // Use 'cover' behavior: fill entire placeholder, may crop image
+      fitScale = Math.max(scaleX, scaleY);
+    }
 
     // With transform-origin: top left, we need to center the image manually
     const scaledImageWidth = placeholder.imageWidth * fitScale;
