@@ -385,7 +385,13 @@ export class AppComponent {
     // Calculate zoom factor (1.1 for zoom in, 1/1.1 for zoom out)
     const zoomFactor = event.deltaY < 0 ? 1.1 : 1 / 1.1;
     const oldScale = placeholder.scale;
-    const newScale = oldScale * zoomFactor;
+    let newScale = oldScale * zoomFactor;
+
+    // If whitespace is not allowed, enforce minimum scale
+    if (!this.allowWhitespace) {
+      const minScale = this.calculateMinimumScale(placeholder);
+      newScale = Math.max(minScale, newScale);
+    }
 
     // Calculate the point under the mouse in the image coordinate space (before zoom)
     const imageX = (mouseX - placeholder.offsetX) / oldScale;
@@ -407,5 +413,20 @@ export class AppComponent {
     // Update placeholder state
     placeholder.offsetX = newOffsetX;
     placeholder.offsetY = newOffsetY;
+  }
+
+  private calculateMinimumScale(placeholder: PlaceholderState): number {
+    // Get the actual placeholder dimensions in CSS pixels
+    const mmToCssPx = 96 / 25.4;
+    const placeholderWidthPx = this.pictureWidth * mmToCssPx;
+    const placeholderHeightPx = this.pictureHeight * mmToCssPx;
+
+    // Calculate minimum scale needed to cover the placeholder completely
+    // The image must be at least as wide and as tall as the placeholder
+    const minScaleX = placeholderWidthPx / placeholder.imageWidth;
+    const minScaleY = placeholderHeightPx / placeholder.imageHeight;
+
+    // Use the larger of the two to ensure both dimensions are covered
+    return Math.max(minScaleX, minScaleY);
   }
 }
