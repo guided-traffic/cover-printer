@@ -645,92 +645,15 @@
   background: rgba(220, 38, 38, 1);
 }
 
-/* Print Styles */
+/* Print Styles - Dynamic dimensions handled by TypeScript */
 @media print {
-  html {
-    height: 15cm;
-    width: 10cm;
-  }
-
-  body {
-    background: white !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    height: 15cm !important;
-    width: 10cm !important;
-    overflow: hidden !important;
-    position: relative !important;
-  }
-
-  .app-container {
-    background: white;
-    height: 15cm !important;
-    width: 10cm !important;
-    overflow: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
   .header,
   .control-panel,
   .no-print {
     display: none !important;
   }
 
-  .main-content {
-    padding: 0 !important;
-    margin: 0 !important;
-    display: block !important;
-    height: 15cm !important;
-    width: 10cm !important;
-    overflow: hidden !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-  }
-
-  .print-preview {
-    padding: 0 !important;
-    margin: 0 !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    height: 15cm !important;
-    width: 10cm !important;
-    overflow: hidden !important;
-    display: block !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-  }
-
-  .preview-container {
-    padding: 0 !important;
-    margin: 0 !important;
-    height: 15cm !important;
-    width: 10cm !important;
-    overflow: hidden !important;
-    display: block !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-  }
-
-  .paper {
-    box-shadow: none !important;
-    border: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    height: 15cm !important;
-    width: 10cm !important;
-    overflow: visible !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-  }
-
   .grid-container {
-    height: 15cm !important;
-    width: 10cm !important;
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
@@ -776,11 +699,6 @@
     print-color-adjust: exact;
     /* Ensure transform is preserved during print */
     transform-origin: top left !important;
-  }
-
-  @page {
-    size: 10cm 15cm;
-    margin: 0;
   }
 }
 

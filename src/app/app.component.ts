@@ -86,6 +86,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.calculateGrid();
+    this.updatePrintStyles();
 
     // Add global mouse event listeners for image dragging
     document.addEventListener('mousemove', this.onMouseMove.bind(this));
@@ -96,6 +97,7 @@ export class AppComponent {
     const select = event.target as HTMLSelectElement;
     this.selectedPaperSize = this.paperSizes[parseInt(select.value)];
     this.calculateGrid();
+    this.updatePrintStyles();
   }
 
   onParameterChange() {
@@ -194,6 +196,101 @@ export class AppComponent {
         isDragOver: false
       };
     });
+  }
+
+  updatePrintStyles() {
+    // Remove existing dynamic print styles
+    const existingStyle = document.getElementById('dynamic-print-styles');
+    if (existingStyle) {
+      existingStyle.remove();
+    }
+
+    // Create new style element with dynamic print styles
+    const style = document.createElement('style');
+    style.id = 'dynamic-print-styles';
+    style.innerHTML = `
+      @media print {
+        @page {
+          size: ${this.selectedPaperSize.width}cm ${this.selectedPaperSize.height}cm;
+          margin: 0;
+        }
+
+        html {
+          height: ${this.selectedPaperSize.height}cm;
+          width: ${this.selectedPaperSize.width}cm;
+        }
+
+        body {
+          background: white !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          height: ${this.selectedPaperSize.height}cm !important;
+          width: ${this.selectedPaperSize.width}cm !important;
+          overflow: hidden !important;
+          position: relative !important;
+        }
+
+        .app-container {
+          background: white;
+          height: ${this.selectedPaperSize.height}cm !important;
+          width: ${this.selectedPaperSize.width}cm !important;
+          overflow: hidden !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+
+        .main-content {
+          padding: 0 !important;
+          margin: 0 !important;
+          display: block !important;
+          height: ${this.selectedPaperSize.height}cm !important;
+          width: ${this.selectedPaperSize.width}cm !important;
+          overflow: hidden !important;
+          position: absolute !important;
+          top: 0 !important;
+          left: 0 !important;
+        }
+
+        .print-preview {
+          padding: 0 !important;
+          margin: 0 !important;
+          box-shadow: none !important;
+          border-radius: 0 !important;
+          height: ${this.selectedPaperSize.height}cm !important;
+          width: ${this.selectedPaperSize.width}cm !important;
+          overflow: hidden !important;
+          display: block !important;
+          position: absolute !important;
+          top: 0 !important;
+          left: 0 !important;
+        }
+
+        .preview-container {
+          padding: 0 !important;
+          margin: 0 !important;
+          height: ${this.selectedPaperSize.height}cm !important;
+          width: ${this.selectedPaperSize.width}cm !important;
+          overflow: hidden !important;
+          display: block !important;
+          position: absolute !important;
+          top: 0 !important;
+          left: 0 !important;
+        }
+
+        .paper {
+          box-shadow: none !important;
+          border: none !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          height: ${this.selectedPaperSize.height}cm !important;
+          width: ${this.selectedPaperSize.width}cm !important;
+          overflow: hidden !important;
+        }
+      }
+    `;
+
+    // Add the style to the document head
+    document.head.appendChild(style);
   }
 
   // Drag and drop event handlers
