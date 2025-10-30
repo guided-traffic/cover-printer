@@ -87,6 +87,16 @@
             step="0.5"
           />
         </div>
+        <div class="form-group checkbox-group">
+          <label for="allow-whitespace">
+            <input
+              type="checkbox"
+              id="allow-whitespace"
+              [(ngModel)]="allowWhitespace"
+            />
+            Allow Whitespace
+          </label>
+        </div>
       </div>
 
       <div class="info-section">
@@ -151,7 +161,9 @@
                    (wheel)="onWheel($event, placeholder)">
                 <img
                   [src]="placeholder.imageData"
-                  [style.transform]="'translate(' + placeholder.offsetX + 'px, ' + placeholder.offsetY + 'px) scale(' + placeholder.scale + ')'"
+                  [style.width.px]="placeholder.imageWidth * placeholder.scale"
+                  [style.height.px]="placeholder.imageHeight * placeholder.scale"
+                  [style.transform]="'translate(' + placeholder.offsetX + 'px, ' + placeholder.offsetY + 'px)'"
                   alt="Placeholder image"
                 />
                 <button class="reset-btn no-print" (click)="resetImage($event, placeholder)" title="Reset image (fit to fill)">

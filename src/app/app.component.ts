@@ -53,6 +53,9 @@ export class AppComponent {
   margins = 4;
   spacing = 2;
 
+  // Allow whitespace when dragging images
+  allowWhitespace = false;
+
   // Calculated grid
   rows = 0;
   columns = 0;
@@ -207,10 +210,12 @@ export class AppComponent {
     const scaleY = placeholderHeightPx / placeholder.imageHeight;
     const fitScale = Math.min(scaleX, scaleY);
 
-    // With transform-origin: center center, the image is automatically centered
-    // We just need to set the scale
-    placeholder.offsetX = 0;
-    placeholder.offsetY = 0;
+    // With transform-origin: top left, we need to center the image manually
+    const scaledImageWidth = placeholder.imageWidth * fitScale;
+    const scaledImageHeight = placeholder.imageHeight * fitScale;
+
+    placeholder.offsetX = (placeholderWidthPx - scaledImageWidth) / 2;
+    placeholder.offsetY = (placeholderHeightPx - scaledImageHeight) / 2;
     placeholder.scale = fitScale;
   }
 
@@ -274,9 +279,70 @@ export class AppComponent {
     const deltaX = event.clientX - this.dragState.startX;
     const deltaY = event.clientY - this.dragState.startY;
 
+    // Calculate new offset
+    let newOffsetX = this.dragState.startOffsetX + deltaX;
+    let newOffsetY = this.dragState.startOffsetY + deltaY;
+
+    // If whitespace is not allowed, constrain the image position
+    if (!this.allowWhitespace) {
+      newOffsetX = this.constrainOffset(newOffsetX, placeholder, 'x');
+      newOffsetY = this.constrainOffset(newOffsetY, placeholder, 'y');
+    }
+
     // Update image offset
-    placeholder.offsetX = this.dragState.startOffsetX + deltaX;
-    placeholder.offsetY = this.dragState.startOffsetY + deltaY;
+    placeholder.offsetX = newOffsetX;
+    placeholder.offsetY = newOffsetY;
+  }
+
+  private constrainOffset(offset: number, placeholder: PlaceholderState, axis: 'x' | 'y'): number {
+    // Get the actual placeholder dimensions in CSS pixels
+    const mmToCssPx = 96 / 25.4;
+    const placeholderWidthPx = this.pictureWidth * mmToCssPx;
+    const placeholderHeightPx = this.pictureHeight * mmToCssPx;
+
+    // Calculate the scaled image dimensions
+    const scaledImageWidth = placeholder.imageWidth * placeholder.scale;
+    const scaledImageHeight = placeholder.imageHeight * placeholder.scale;
+
+    if (axis === 'x') {
+      // If the image is smaller than the placeholder, center it
+      if (scaledImageWidth <= placeholderWidthPx) {
+        return (placeholderWidthPx - scaledImageWidth) / 2;
+      }
+
+      // With transform-origin: top left, the image positioning is straightforward:
+      // The left edge is at: offsetX
+      // The right edge is at: offsetX + scaledImageWidth
+
+      // To prevent whitespace on the left: offsetX <= 0
+      const maxOffset = 0;
+
+      // To prevent whitespace on the right: offsetX + scaledImageWidth >= placeholderWidthPx
+      // So: offsetX >= placeholderWidthPx - scaledImageWidth (this will be negative for larger images)
+      const minOffset = placeholderWidthPx - scaledImageWidth;
+
+      // Clamp the offset
+      return Math.max(minOffset, Math.min(maxOffset, offset));
+    } else {
+      // If the image is smaller than the placeholder, center it
+      if (scaledImageHeight <= placeholderHeightPx) {
+        return (placeholderHeightPx - scaledImageHeight) / 2;
+      }
+
+      // With transform-origin: top left, the image positioning is straightforward:
+      // The top edge is at: offsetY
+      // The bottom edge is at: offsetY + scaledImageHeight
+
+      // To prevent whitespace on the top: offsetY <= 0
+      const maxOffset = 0;
+
+      // To prevent whitespace on the bottom: offsetY + scaledImageHeight >= placeholderHeightPx
+      // So: offsetY >= placeholderHeightPx - scaledImageHeight (this will be negative for larger images)
+      const minOffset = placeholderHeightPx - scaledImageHeight;
+
+      // Clamp the offset
+      return Math.max(minOffset, Math.min(maxOffset, offset));
+    }
   }
 
   private onMouseUp(event: MouseEvent) {
@@ -326,11 +392,19 @@ export class AppComponent {
     const imageY = (mouseY - placeholder.offsetY) / oldScale;
 
     // Calculate new offset to keep the point under the mouse stationary
-    const newOffsetX = mouseX - imageX * newScale;
-    const newOffsetY = mouseY - imageY * newScale;
+    let newOffsetX = mouseX - imageX * newScale;
+    let newOffsetY = mouseY - imageY * newScale;
+
+    // Update scale first so constrainOffset can use it
+    placeholder.scale = newScale;
+
+    // If whitespace is not allowed, constrain the image position after zooming
+    if (!this.allowWhitespace) {
+      newOffsetX = this.constrainOffset(newOffsetX, placeholder, 'x');
+      newOffsetY = this.constrainOffset(newOffsetY, placeholder, 'y');
+    }
 
     // Update placeholder state
-    placeholder.scale = newScale;
     placeholder.offsetX = newOffsetX;
     placeholder.offsetY = newOffsetY;
   }

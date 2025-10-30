@@ -153,6 +153,36 @@
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
+/* Checkbox Group */
+.checkbox-group {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 1.125rem;
+  height: 1.125rem;
+  cursor: pointer;
+  accent-color: #667eea;
+}
+
+.checkbox-group input[type="checkbox"]:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
 /* Info Section */
 .info-section {
   display: grid;
@@ -338,12 +368,15 @@
 }
 
 .image-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
   max-width: none;
   max-height: none;
   width: auto;
   height: auto;
   display: block;
-  transform-origin: center center;
+  transform-origin: top left;
   pointer-events: none;
   user-select: none;
 }
@@ -482,7 +515,7 @@
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     /* Ensure transform is preserved during print */
-    transform-origin: center center !important;
+    transform-origin: top left !important;
   }
 
   @page {
