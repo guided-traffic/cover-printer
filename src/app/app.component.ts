@@ -46,8 +46,8 @@ export class AppComponent {
   selectedPaperSize = this.paperSizes[0];
 
   // Picture dimensions in mm
-  pictureWidth = 42;
-  pictureHeight = 42;
+  pictureWidth = 44;
+  pictureHeight = 44;
 
   // Spacing in mm
   margins = 4;
