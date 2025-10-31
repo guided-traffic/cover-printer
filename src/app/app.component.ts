@@ -635,4 +635,34 @@ export class AppComponent {
       isDarkMode: this.isDarkMode()
     });
   }
+
+  /**
+   * Restore all settings to default values
+   */
+  restoreSettings(): void {
+    this.selectedPaperSize = this.paperSizes[0];
+    this.pictureWidth = 44;
+    this.pictureHeight = 44;
+    this.margins = 4;
+    this.spacing = 2;
+    this.allowWhitespace = false;
+    this.showCropMarks = true;
+
+    this.calculateGrid();
+    this.saveSettings();
+  }
+
+  /**
+   * Clear all pictures from all placeholders
+   */
+  clearAllPictures(): void {
+    this.placeholders.forEach(placeholder => {
+      placeholder.imageData = null;
+      placeholder.offsetX = 0;
+      placeholder.offsetY = 0;
+      placeholder.scale = 1;
+      placeholder.imageWidth = 0;
+      placeholder.imageHeight = 0;
+    });
+  }
 }
