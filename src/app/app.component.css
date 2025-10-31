@@ -790,3 +790,211 @@
     color: #000;
   }
 }
+
+/* ===== DARK MODE STYLES ===== */
+.app-container.dark-mode {
+  background-color: #1a1a1a;
+}
+
+.dark-mode .header {
+  background: linear-gradient(135deg, #4c5aa0 0%, #5a3d7a 100%);
+}
+
+/* Dark Mode Toggle Button */
+.dark-mode-toggle {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  transition: all 0.2s ease;
+  padding: 0.5rem 0.875rem;
+}
+
+.dark-mode-toggle svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+}
+
+.dark-mode-toggle:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dark-mode-toggle:active {
+  transform: scale(0.95);
+}
+
+/* Control Panel - Dark Mode */
+.dark-mode .control-panel {
+  background: #2d2d2d;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid #3d3d3d;
+}
+
+.dark-mode .control-section {
+  border-bottom-color: #3d3d3d;
+}
+
+.dark-mode .control-section h2 {
+  color: #e5e7eb;
+}
+
+.dark-mode .form-group label {
+  color: #9ca3af;
+}
+
+.dark-mode .form-group select,
+.dark-mode .form-group input[type="number"] {
+  background-color: #1f1f1f;
+  border-color: #3d3d3d;
+  color: #e5e7eb;
+}
+
+.dark-mode .form-group select:focus,
+.dark-mode .form-group input[type="number"]:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+  background-color: #1f1f1f;
+}
+
+.dark-mode .checkbox-group {
+  border-top-color: #3d3d3d;
+}
+
+.dark-mode .checkbox-group label {
+  color: #d1d5db;
+}
+
+.dark-mode .checkbox-group input[type="checkbox"] {
+  accent-color: #667eea;
+}
+
+/* Info Cards - Dark Mode */
+.dark-mode .info-card {
+  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+  border-color: #667eea30;
+}
+
+.dark-mode .info-label {
+  color: #9ca3af;
+}
+
+.dark-mode .info-value {
+  color: #667eea;
+}
+
+.dark-mode .info-sub {
+  color: #6b7280;
+}
+
+.dark-mode .info-card.error {
+  background: linear-gradient(135deg, #ef444415 0%, #dc262615 100%);
+  border-color: #ef444430;
+}
+
+.dark-mode .info-card.error .info-value {
+  color: #ef4444;
+}
+
+.dark-mode .info-card.error .info-sub {
+  color: #dc2626;
+}
+
+/* Instructions - Dark Mode */
+.dark-mode .instructions {
+  background: #252525;
+  border: 1px solid #3d3d3d;
+}
+
+.dark-mode .instructions h3 {
+  color: #e5e7eb;
+}
+
+.dark-mode .instructions ol {
+  color: #9ca3af;
+}
+
+.dark-mode .instructions kbd {
+  background: #1f1f1f;
+  border-color: #3d3d3d;
+  color: #9ca3af;
+}
+
+/* Paper - Dark Mode */
+.dark-mode .paper {
+  background: white;
+  border-color: #3d3d3d;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Feature Notice Header - Dark Mode */
+.dark-mode .feature-notice-header {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.dark-mode .feature-notice-header:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.dark-mode .feature-notice-header a {
+  color: white;
+}
+
+/* Build Number - Dark Mode */
+.dark-mode .build-number {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.dark-mode .build-number:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Error Overlay - Dark Mode */
+.dark-mode .error-overlay {
+  background: rgba(26, 26, 26, 0.95);
+}
+
+.dark-mode .error-message {
+  background: #2d2d2d;
+  border-color: #ef4444;
+}
+
+.dark-mode .error-text {
+  color: #e5e7eb;
+}
+
+.dark-mode .error-suggestion {
+  color: #9ca3af;
+  border-top-color: #3d3d3d;
+}
+
+/* Main Content - Dark Mode */
+.dark-mode .main-content {
+  background-color: #1a1a1a;
+}
+
+/* Print Styles (prevent dark mode affecting print) */
+@media print {
+  .dark-mode body,
+  .dark-mode .paper,
+  .dark-mode .app-container {
+    background-color: white !important;
+  }
+
+  .dark-mode .placeholder-content {
+    color: #9ca3af !important;
+  }
+}
