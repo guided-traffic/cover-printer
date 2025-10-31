@@ -31,6 +31,12 @@
   flex-shrink: 0;
 }
 
+.header-left h1 .app-logo {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+}
+
 .header-center {
   flex: 1;
   display: flex;
