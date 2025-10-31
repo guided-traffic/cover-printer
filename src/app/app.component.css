@@ -218,6 +218,17 @@
   border-top: 1px solid #e5e7eb;
 }
 
+/* Remove borders for Options checkboxes */
+.options-checkbox {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0.5rem;
+}
+
+.options-checkbox:first-of-type {
+  margin-top: 0;
+}
+
 .checkbox-group label {
   display: flex;
   align-items: center;
