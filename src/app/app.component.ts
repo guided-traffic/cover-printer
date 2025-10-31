@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { StorageService } from './services/storage.service';
 
 interface PlaceholderState {
   id: number;
@@ -37,6 +38,9 @@ export class AppComponent {
 
   // Build number from environment variables
   buildNumber = (window as any)?.env?.buildNumber || 'dev';
+
+  // Storage service
+  private storageService = new StorageService();
 
   // Dark mode state
   isDarkMode = signal(false);
@@ -88,6 +92,21 @@ export class AppComponent {
   };
 
   ngOnInit() {
+    // Load settings from storage
+    const settings = this.storageService.loadSettings();
+
+    // Apply loaded settings
+    this.selectedPaperSize = this.paperSizes[settings.selectedPaperSizeIndex];
+    this.pictureWidth = settings.pictureWidth;
+    this.pictureHeight = settings.pictureHeight;
+    this.margins = settings.margins;
+    this.spacing = settings.spacing;
+    this.allowWhitespace = settings.allowWhitespace;
+    this.showCropMarks = settings.showCropMarks;
+
+    // Load and apply dark mode preference
+    this.isDarkMode.set(this.storageService.getDarkMode());
+
     this.calculateGrid();
     this.updatePrintStyles();
 
@@ -101,10 +120,12 @@ export class AppComponent {
     this.selectedPaperSize = this.paperSizes[parseInt(select.value)];
     this.calculateGrid();
     this.updatePrintStyles();
+    this.saveSettings();
   }
 
   onParameterChange() {
     this.calculateGrid();
+    this.saveSettings();
   }
 
   onAllowWhitespaceChange() {
@@ -114,6 +135,7 @@ export class AppComponent {
         this.fitImageToPlaceholder(placeholder);
       }
     });
+    this.saveSettings();
   }
 
   calculateGrid() {
@@ -593,5 +615,24 @@ export class AppComponent {
 
   toggleDarkMode(): void {
     this.isDarkMode.update(value => !value);
+    this.storageService.setDarkMode(this.isDarkMode());
+  }
+
+  /**
+   * Save all current settings to localStorage
+   */
+  private saveSettings(): void {
+    const selectedPaperSizeIndex = this.paperSizes.indexOf(this.selectedPaperSize);
+
+    this.storageService.saveSettings({
+      selectedPaperSizeIndex,
+      pictureWidth: this.pictureWidth,
+      pictureHeight: this.pictureHeight,
+      margins: this.margins,
+      spacing: this.spacing,
+      allowWhitespace: this.allowWhitespace,
+      showCropMarks: this.showCropMarks,
+      isDarkMode: this.isDarkMode()
+    });
   }
 }
