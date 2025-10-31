@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { StorageService } from './services/storage.service';
 
 interface PlaceholderState {
   id: number;
@@ -38,6 +39,9 @@ export class AppComponent {
   // Build number from environment variables
   buildNumber = (window as any)?.env?.buildNumber || 'dev';
 
+  // Storage service
+  private storageService = new StorageService();
+
   // Dark mode state
   isDarkMode = signal(false);
 
@@ -49,6 +53,7 @@ export class AppComponent {
     { label: 'A4', width: 21, height: 29.7 }
   ];
   selectedPaperSize = this.paperSizes[0];
+  selectedPaperSizeIndex = 0;
 
   // Picture dimensions in mm
   pictureWidth = 44;
@@ -88,6 +93,22 @@ export class AppComponent {
   };
 
   ngOnInit() {
+    // Load settings from storage
+    const settings = this.storageService.loadSettings();
+
+    // Apply loaded settings
+    this.selectedPaperSizeIndex = settings.selectedPaperSizeIndex;
+    this.selectedPaperSize = this.paperSizes[settings.selectedPaperSizeIndex];
+    this.pictureWidth = settings.pictureWidth;
+    this.pictureHeight = settings.pictureHeight;
+    this.margins = settings.margins;
+    this.spacing = settings.spacing;
+    this.allowWhitespace = settings.allowWhitespace;
+    this.showCropMarks = settings.showCropMarks;
+
+    // Load and apply dark mode preference
+    this.isDarkMode.set(this.storageService.getDarkMode());
+
     this.calculateGrid();
     this.updatePrintStyles();
 
@@ -98,13 +119,16 @@ export class AppComponent {
 
   onPaperSizeChange(event: Event) {
     const select = event.target as HTMLSelectElement;
-    this.selectedPaperSize = this.paperSizes[parseInt(select.value)];
+    this.selectedPaperSizeIndex = parseInt(select.value);
+    this.selectedPaperSize = this.paperSizes[this.selectedPaperSizeIndex];
     this.calculateGrid();
     this.updatePrintStyles();
+    this.saveSettings();
   }
 
   onParameterChange() {
     this.calculateGrid();
+    this.saveSettings();
   }
 
   onAllowWhitespaceChange() {
@@ -114,6 +138,7 @@ export class AppComponent {
         this.fitImageToPlaceholder(placeholder);
       }
     });
+    this.saveSettings();
   }
 
   calculateGrid() {
@@ -593,5 +618,57 @@ export class AppComponent {
 
   toggleDarkMode(): void {
     this.isDarkMode.update(value => !value);
+    this.storageService.setDarkMode(this.isDarkMode());
+  }
+
+  /**
+   * Save all current settings to localStorage
+   */
+  private saveSettings(): void {
+    this.storageService.saveSettings({
+      selectedPaperSizeIndex: this.selectedPaperSizeIndex,
+      pictureWidth: this.pictureWidth,
+      pictureHeight: this.pictureHeight,
+      margins: this.margins,
+      spacing: this.spacing,
+      allowWhitespace: this.allowWhitespace,
+      showCropMarks: this.showCropMarks,
+      isDarkMode: this.isDarkMode()
+    });
+  }
+
+  /**
+   * Restore all settings to default values, but keep dark mode preference
+   */
+  restoreSettings(): void {
+    // Reset all settings to defaults
+    this.selectedPaperSizeIndex = 0;
+    this.selectedPaperSize = this.paperSizes[0];
+    this.pictureWidth = 44;
+    this.pictureHeight = 44;
+    this.margins = 4;
+    this.spacing = 2;
+    this.allowWhitespace = false;
+    this.showCropMarks = true;
+
+    this.calculateGrid();
+    this.updatePrintStyles();
+
+    // Save settings (which will include dark mode preference)
+    this.saveSettings();
+  }
+
+  /**
+   * Clear all pictures from all placeholders
+   */
+  clearAllPictures(): void {
+    this.placeholders.forEach(placeholder => {
+      placeholder.imageData = null;
+      placeholder.offsetX = 0;
+      placeholder.offsetY = 0;
+      placeholder.scale = 1;
+      placeholder.imageWidth = 0;
+      placeholder.imageHeight = 0;
+    });
   }
 }

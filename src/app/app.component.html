@@ -60,7 +60,7 @@
         <h2>Paper Size</h2>
         <div class="form-group">
           <label for="paper-size">Size</label>
-          <select id="paper-size" (change)="onPaperSizeChange($event)">
+          <select id="paper-size" [(ngModel)]="selectedPaperSizeIndex" (change)="onPaperSizeChange($event)">
             <option *ngFor="let size of paperSizes; let i = index" [value]="i">
               {{ size.label }}
             </option>
@@ -118,7 +118,11 @@
             step="0.5"
           />
         </div>
-        <div class="form-group checkbox-group">
+      </div>
+
+      <div class="control-section">
+        <h2>Options</h2>
+        <div class="form-group checkbox-group options-checkbox">
           <label for="allow-whitespace">
             <input
               type="checkbox"
@@ -129,7 +133,7 @@
             Allow Whitespace
           </label>
         </div>
-        <div class="form-group checkbox-group">
+        <div class="form-group checkbox-group options-checkbox">
           <label for="show-crop-marks">
             <input
               type="checkbox"
@@ -138,6 +142,14 @@
             />
             Show Crop Marks
           </label>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-secondary" (click)="restoreSettings()" title="Restore default settings">
+            Restore Settings
+          </button>
+          <button class="btn btn-danger" (click)="clearAllPictures()" title="Remove all pictures from placeholders">
+            Clear all pictures
+          </button>
         </div>
       </div>
 
