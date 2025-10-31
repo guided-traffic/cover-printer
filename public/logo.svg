@@ -25,5 +25,5 @@
   <path d="M 128 120 L 192 92 L 192 172 L 128 200 Z" fill="url(#neonGradient)" filter="url(#neonGlow)" opacity="0.6" stroke="#0099ff" stroke-width="2" stroke-linejoin="round"/>
 
   <!-- Top square centered in top surface with same isometric perspective -->
-  <path d="M 96 92 L 128 78 L 160 92 L 128 106 Z" fill="url(#neonGradient)" filter="url(#neonGlow)" stroke="#00d4ff" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M 96 92 L 128 78 L 160 92 L 128 106 Z" fill="url(#neonGradient)" filter="url(#neonGlow)" stroke="#00ff99" stroke-width="3.5" stroke-linejoin="round"/>
 </svg>
