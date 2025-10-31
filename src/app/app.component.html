@@ -60,7 +60,7 @@
         <h2>Paper Size</h2>
         <div class="form-group">
           <label for="paper-size">Size</label>
-          <select id="paper-size" (change)="onPaperSizeChange($event)">
+          <select id="paper-size" [(ngModel)]="selectedPaperSizeIndex" (change)="onPaperSizeChange($event)">
             <option *ngFor="let size of paperSizes; let i = index" [value]="i">
               {{ size.label }}
             </option>

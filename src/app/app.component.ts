@@ -53,6 +53,7 @@ export class AppComponent {
     { label: 'A4', width: 21, height: 29.7 }
   ];
   selectedPaperSize = this.paperSizes[0];
+  selectedPaperSizeIndex = 0;
 
   // Picture dimensions in mm
   pictureWidth = 44;
@@ -96,6 +97,7 @@ export class AppComponent {
     const settings = this.storageService.loadSettings();
 
     // Apply loaded settings
+    this.selectedPaperSizeIndex = settings.selectedPaperSizeIndex;
     this.selectedPaperSize = this.paperSizes[settings.selectedPaperSizeIndex];
     this.pictureWidth = settings.pictureWidth;
     this.pictureHeight = settings.pictureHeight;
@@ -117,7 +119,8 @@ export class AppComponent {
 
   onPaperSizeChange(event: Event) {
     const select = event.target as HTMLSelectElement;
-    this.selectedPaperSize = this.paperSizes[parseInt(select.value)];
+    this.selectedPaperSizeIndex = parseInt(select.value);
+    this.selectedPaperSize = this.paperSizes[this.selectedPaperSizeIndex];
     this.calculateGrid();
     this.updatePrintStyles();
     this.saveSettings();
@@ -622,10 +625,8 @@ export class AppComponent {
    * Save all current settings to localStorage
    */
   private saveSettings(): void {
-    const selectedPaperSizeIndex = this.paperSizes.indexOf(this.selectedPaperSize);
-
     this.storageService.saveSettings({
-      selectedPaperSizeIndex,
+      selectedPaperSizeIndex: this.selectedPaperSizeIndex,
       pictureWidth: this.pictureWidth,
       pictureHeight: this.pictureHeight,
       margins: this.margins,
@@ -637,9 +638,11 @@ export class AppComponent {
   }
 
   /**
-   * Restore all settings to default values
+   * Restore all settings to default values, but keep dark mode preference
    */
   restoreSettings(): void {
+    // Reset all settings to defaults
+    this.selectedPaperSizeIndex = 0;
     this.selectedPaperSize = this.paperSizes[0];
     this.pictureWidth = 44;
     this.pictureHeight = 44;
@@ -649,6 +652,9 @@ export class AppComponent {
     this.showCropMarks = true;
 
     this.calculateGrid();
+    this.updatePrintStyles();
+
+    // Save settings (which will include dark mode preference)
     this.saveSettings();
   }
 
