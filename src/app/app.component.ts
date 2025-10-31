@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -37,6 +37,9 @@ export class AppComponent {
 
   // Build number from environment variables
   buildNumber = (window as any)?.env?.buildNumber || 'dev';
+
+  // Dark mode state
+  isDarkMode = signal(false);
 
   // Paper sizes in cm
   paperSizes = [
@@ -586,5 +589,9 @@ export class AppComponent {
 
     // Use the larger of the two to ensure both dimensions are covered
     return Math.max(minScaleX, minScaleY);
+  }
+
+  toggleDarkMode(): void {
+    this.isDarkMode.update(value => !value);
   }
 }

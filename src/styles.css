@@ -11,6 +11,13 @@ body {
   background-color: #f5f5f5;
   color: #333;
   line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Mode Global Styles */
+.app-container.dark-mode body {
+  background-color: #1a1a1a;
+  color: #e5e7eb;
 }
 
 /* Print styles */
